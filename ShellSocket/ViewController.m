@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    [[HBTCPClientInstance instance]connect:@"172.16.81.57" port:10001];
+    [[HBTCPClientInstance instance]connect:@"111.10.24.47" port:5150];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -28,8 +28,17 @@
 }
 
 - (IBAction)buttonClick:(UIButton *)sender {
-    NSString *lString=@"HelloWorld";
-    [[HBTCPClientInstance instance]sendData:[lString dataUsingEncoding:NSUTF8StringEncoding]];
+//    NSString *lString=@"HelloWorld";
+    NSMutableData *lData=[NSMutableData data];
+    unsigned int a=2;
+    a=a<<2;
+    a=a+1;
+    [lData appendBytes:&a length:1];
+    unsigned int b=1;
+    [lData appendBytes:&b length:4];
+//    unsigned int c=0;
+//    [lData appendBytes:&c length:4];
+    [[HBTCPClientInstance instance]sendData:lData];
 //    [[HBTCPClientInstance instance]disconnect];
 }
 @end

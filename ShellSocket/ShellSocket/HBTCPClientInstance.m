@@ -40,7 +40,8 @@
     NSInputStream  *tempInput  = nil;
     NSOutputStream *tempOutput = nil;
     
-    [HBTCPHelper getStreamsToHostNamed:host port:port inputStream:&tempInput outputStream:&tempOutput];
+//    [HBTCPHelper getStreamsToHostNamed:host port:port inputStream:&tempInput outputStream:&tempOutput];
+    [NSStream getStreamsToHostWithName:host port:port inputStream:&tempInput outputStream:&tempOutput];
     self.inputStream  = tempInput;
     self.outputStream = tempOutput;
     
@@ -75,21 +76,21 @@
     
 }
 -(void)handleStreamEventHasBytesAvailable:(NSStream *)stream{//接收数据
-//    if (stream) {
-//        NSInputStream *inputStream=(NSInputStream *)stream;
-//        uint8_t buf[1024];
-//        NSInteger len = 0;
-//        len = [inputStream read:buf maxLength:1024];
-//        if (len>0) {
-//            
-//        }
-//    }
+    if (stream) {
+        NSInputStream *inputStream=(NSInputStream *)stream;
+        uint8_t buf[1024];
+        NSInteger len = 0;
+        len = [inputStream read:buf maxLength:1024];
+        if (len>0) {
+            
+        }
+    }
 }
 -(void)handleStreamEventHasSpaceAvailable:(NSStream *)stream{//发送数据
     
 }
--(void)handleStreamEventErrorOccurred:(NSStream *)stream{//发送错误
-    
+-(void)handleStreamEventErrorOccurred:(NSStream *)stream{//错误
+    [self disconnect];
 }
 -(void)handleStreamEventEndEncountered:(NSStream *)stream{//inputStream接收到的末尾
     
