@@ -82,7 +82,8 @@
         NSInteger len = 0;
         len = [inputStream read:buf maxLength:1024];
         if (len>0) {
-            
+            NSData *lData=[NSData dataWithBytes:buf length:len];
+            NSLog(@"%@",lData);
         }
     }
 }
@@ -90,7 +91,7 @@
     
 }
 -(void)handleStreamEventErrorOccurred:(NSStream *)stream{//错误
-    [self disconnect];
+//    [self disconnect];
 }
 -(void)handleStreamEventEndEncountered:(NSStream *)stream{//inputStream接收到的末尾
     

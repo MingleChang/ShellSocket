@@ -15,6 +15,11 @@
 		8217E8FF1D8283FC002340BF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8217E8FD1D8283FC002340BF /* LaunchScreen.storyboard */; };
 		8217E9091D828579002340BF /* HBTCPClientInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 8217E9081D828579002340BF /* HBTCPClientInstance.m */; };
 		8217E90C1D828795002340BF /* HBTCPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8217E90B1D828795002340BF /* HBTCPHelper.m */; };
+		8217E91A1D82B4F7002340BF /* base64.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8217E90F1D82B4F7002340BF /* base64.cc */; };
+		8217E91B1D82B4F7002340BF /* client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8217E9111D82B4F7002340BF /* client.cpp */; };
+		8217E91C1D82B4F7002340BF /* interface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8217E9131D82B4F7002340BF /* interface.cpp */; };
+		8217E91D1D82B4F7002340BF /* protocol.c in Sources */ = {isa = PBXBuildFile; fileRef = 8217E9151D82B4F7002340BF /* protocol.c */; };
+		8217E91F1D82B4F7002340BF /* utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 8217E9181D82B4F7002340BF /* utils.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +38,16 @@
 		8217E90A1D828795002340BF /* HBTCPHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBTCPHelper.h; sourceTree = "<group>"; };
 		8217E90B1D828795002340BF /* HBTCPHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HBTCPHelper.m; sourceTree = "<group>"; };
 		8217E90D1D828F69002340BF /* HBTCPEnum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HBTCPEnum.h; sourceTree = "<group>"; };
+		8217E90F1D82B4F7002340BF /* base64.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = base64.cc; sourceTree = "<group>"; };
+		8217E9101D82B4F7002340BF /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
+		8217E9111D82B4F7002340BF /* client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = client.cpp; sourceTree = "<group>"; };
+		8217E9121D82B4F7002340BF /* client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client.h; sourceTree = "<group>"; };
+		8217E9131D82B4F7002340BF /* interface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = interface.cpp; sourceTree = "<group>"; };
+		8217E9141D82B4F7002340BF /* interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interface.h; sourceTree = "<group>"; };
+		8217E9151D82B4F7002340BF /* protocol.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = protocol.c; sourceTree = "<group>"; };
+		8217E9161D82B4F7002340BF /* protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = protocol.h; sourceTree = "<group>"; };
+		8217E9181D82B4F7002340BF /* utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = utils.c; sourceTree = "<group>"; };
+		8217E9191D82B4F7002340BF /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +80,7 @@
 		8217E8EE1D8283FC002340BF /* ShellSocket */ = {
 			isa = PBXGroup;
 			children = (
+				8217E90E1D82B4F7002340BF /* cppClient */,
 				8217E9061D82840C002340BF /* ShellSocket */,
 				8217E8F21D8283FC002340BF /* AppDelegate.h */,
 				8217E8F31D8283FC002340BF /* AppDelegate.m */,
@@ -97,6 +113,23 @@
 				8217E90D1D828F69002340BF /* HBTCPEnum.h */,
 			);
 			path = ShellSocket;
+			sourceTree = "<group>";
+		};
+		8217E90E1D82B4F7002340BF /* cppClient */ = {
+			isa = PBXGroup;
+			children = (
+				8217E90F1D82B4F7002340BF /* base64.cc */,
+				8217E9101D82B4F7002340BF /* base64.h */,
+				8217E9111D82B4F7002340BF /* client.cpp */,
+				8217E9121D82B4F7002340BF /* client.h */,
+				8217E9131D82B4F7002340BF /* interface.cpp */,
+				8217E9141D82B4F7002340BF /* interface.h */,
+				8217E9151D82B4F7002340BF /* protocol.c */,
+				8217E9161D82B4F7002340BF /* protocol.h */,
+				8217E9181D82B4F7002340BF /* utils.c */,
+				8217E9191D82B4F7002340BF /* utils.h */,
+			);
+			path = cppClient;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,11 +202,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8217E91D1D82B4F7002340BF /* protocol.c in Sources */,
+				8217E91A1D82B4F7002340BF /* base64.cc in Sources */,
 				8217E90C1D828795002340BF /* HBTCPHelper.m in Sources */,
 				8217E8F71D8283FC002340BF /* ViewController.m in Sources */,
+				8217E91B1D82B4F7002340BF /* client.cpp in Sources */,
 				8217E9091D828579002340BF /* HBTCPClientInstance.m in Sources */,
 				8217E8F41D8283FC002340BF /* AppDelegate.m in Sources */,
 				8217E8F11D8283FC002340BF /* main.m in Sources */,
+				8217E91C1D82B4F7002340BF /* interface.cpp in Sources */,
+				8217E91F1D82B4F7002340BF /* utils.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,6 +360,7 @@
 				8217E9051D8283FC002340BF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
