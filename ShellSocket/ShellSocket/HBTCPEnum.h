@@ -9,7 +9,7 @@
 #ifndef HBTCPEnum_h
 #define HBTCPEnum_h
 
-typedef NS_ENUM(NSInteger,HBTCPMessageType){
+typedef NS_ENUM(NSUInteger,HBTCPMessageType){
     HB_TCP_MSGTYPE_DEFAULT=0,   //保留
     HB_TCP_MSGTYPE_REGISTER=1,  //注册请求，客户端发起
     HB_TCP_MSGTYPE_REGRESP,     //注册应答
@@ -29,6 +29,7 @@ typedef NS_ENUM(NSInteger,HBTCPMessageType){
     HB_TCP_MSGTYPE_MSGRESP,     //教室内发送消息应答/回执
     HB_TCP_MSGTYPE_PUSH,        //消息推送通知，服务端发起
     HB_TCP_MSGTYPE_PUSHRESP,    //消息推送回执
+    HB_TCP_MSGTYPE_MAX = 64,
 };
 
 #endif /* HBTCPEnum_h */

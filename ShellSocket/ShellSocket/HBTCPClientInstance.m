@@ -8,6 +8,8 @@
 
 #import "HBTCPClientInstance.h"
 #import "HBTCPHelper.h"
+#import "HBTCPResponse.h"
+
 @interface HBTCPClientInstance ()<NSStreamDelegate>
 
 @property(nonatomic,strong)NSInputStream *inputStream;
@@ -78,13 +80,26 @@
 -(void)handleStreamEventHasBytesAvailable:(NSStream *)stream{//接收数据
     if (stream) {
         NSInputStream *inputStream=(NSInputStream *)stream;
-        uint8_t buf[1024];
-        NSInteger len = 0;
-        len = [inputStream read:buf maxLength:1024];
-        if (len>0) {
-            NSData *lData=[NSData dataWithBytes:buf length:len];
-            NSLog(@"%@",lData);
-        }
+        HBTCPResponse *lResponse=[HBTCPResponse responseWith:inputStream];
+//        uint8_t msgType[1024];
+//        NSInteger len = 0;
+//        len = [inputStream read:msgType maxLength:1];
+//        NSData *lData=[NSData dataWithBytes:msgType length:len];
+//        
+//        unsigned int test;
+//        uint8_t tid[1024];
+//        len = [inputStream read:(void *)&test maxLength:4];
+//        NSInteger a=htonl(test);
+//        NSData *lData1=[NSData dataWithBytes:tid length:len];
+//        
+//        NSLog(@"Hello");
+//        uint8_t buf[1024];
+//        NSInteger len = 0;
+//        len = [inputStream read:buf maxLength:1024];
+//        if (len>0) {
+//            NSData *lData=[NSData dataWithBytes:buf length:len];
+//            NSLog(@"%@",lData);
+//        }
     }
 }
 -(void)handleStreamEventHasSpaceAvailable:(NSStream *)stream{//发送数据
