@@ -39,6 +39,7 @@
     return self;
 }
 
+#pragma mark - Public
 -(void)sendRequest:(HBTCPHeader *)request completion:(completeBlock)complete{
     request.complete=complete;
     NSNumber *lKey=@(request.tid);
@@ -46,7 +47,9 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(30 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if ([self.requestDic.allKeys containsObject:lKey]){
             NSError *lError=[NSError errorWithDomain:@"连接超时" code:HB_TCP_ERROR_CODE_TIMEOUT userInfo:nil];
-            request.complete(lError,nil);
+            if (request.complete) {
+                request.complete(lError,nil);
+            }
             [self.requestDic removeObjectForKey:lKey];
         }
     });
@@ -55,15 +58,20 @@
 
 -(void)receiveHasKeyWith:(HBTCPResponse *)response{
     switch (response.type) {
+        case HB_TCP_MSGTYPE_REGRESP:
         case HB_TCP_MSGTYPE_HBRESP:{
             HBTCPHeader *request=[self.requestDic objectForKey:@(response.tid)];
             uint8_t code;
             [response.data getBytes:&code length:1];
             if (code==0) {
-                request.complete(nil,nil);
+                if (request.complete) {
+                    request.complete(nil,nil);
+                }
             }else{
                 NSError *lError=[NSError errorWithDomain:@"失败" code:code userInfo:nil];
-                request.complete(lError,nil);
+                if (request.complete) {
+                    request.complete(lError,nil);
+                }
             }
             [self.requestDic removeObjectForKey:@(response.tid)];
         }break;
@@ -74,7 +82,14 @@
 }
 
 -(void)receiveNoHasKeyWith:(HBTCPResponse *)response{
-    
+    switch (response.type) {
+        case HB_TCP_MSGTYPE_KICK:{
+            [[NSNotificationCenter defaultCenter]postNotificationName:HB_TCP_NOTIFICATION_KICK object:response];
+        }break;
+            
+        default:
+            break;
+    }
 }
 
 #pragma mark - Notification

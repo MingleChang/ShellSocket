@@ -10,7 +10,17 @@
 #import "HBTCPClientInstance.h"
 #import "protocol.h"
 #import "HBTCPHeartRequest.h"
+#import "HBTCPRegisterRequest.h"
 #import "HBTCPApiManager.h"
+
+#include <iostream>
+#include <pthread.h>
+#include "protocol.h"
+#include "utils.h"
+
+#include "client.h"
+#include "protocol.h"
+#include "utils.h"
 @interface ViewController ()
 - (IBAction)buttonClick:(UIButton *)sender;
 
@@ -50,8 +60,32 @@
     
 
 //    [[HBTCPClientInstance instance]sendData:[lHeart package]];
-    [[HBTCPApiManager manager]sendRequest:[HBTCPHeartRequest heart] completion:^(NSError *error, id response) {
-        NSLog(@"%@",error);
+    
+    //d33b7049c9f94a7487bc90f929da78e0
+    //e8d12b7c41d433396d511ca3618ae2d3
+    
+//    string m_szUserId="d33b7049c9f94a7487bc90f929da78e0";
+//    string m_szToken="e8d12b7c41d433396d511ca3618ae2d3";
+//    MRegister msg;
+//    memset(&msg,0x00,sizeof(MRegister));
+//    SetMsgType(&msg.h, MSGTYPE_REGISTER);
+//    SetPtl(&msg.h,1);
+//    msg.h.tid = htonl(1);
+//    msg.adh.len = htonl(65);
+//    msg.plat = 0x02;
+//    strncpy((char *)msg.id,m_szUserId.c_str(),32);
+//    strncpy((char *)msg.token,m_szToken.c_str(),32);
+//    
+//    NSData *lData=[NSData dataWithBytes:&msg length:sizeof(MRegister)];
+//    [[HBTCPClientInstance instance]sendData:lData];
+    
+    HBTCPRegisterRequest *lRegister=[HBTCPRegisterRequest registerWithUserId:@"d33b7049c9f94a7487bc90f929da78e0" andToken:@"e8d12b7c41d433396d511ca3618ae2d3"];
+    [[HBTCPApiManager manager]sendRequest:lRegister completion:^(NSError *error, id response) {
+        NSLog(@"Register:%@",error);
     }];
+    
+//    [[HBTCPApiManager manager]sendRequest:[HBTCPHeartRequest heart] completion:^(NSError *error, id response) {
+//        NSLog(@"%@",error);
+//    }];
 }
 @end

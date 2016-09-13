@@ -17,4 +17,11 @@
     return lHeart;
 }
 
+
+#pragma mark - HBTCPProtocol
+-(NSMutableData *)package{
+    NSMutableData *lData=[super package];
+    return lData;
+}
+
 @end
