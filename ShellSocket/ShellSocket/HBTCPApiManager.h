@@ -13,6 +13,7 @@
 
 +(HBTCPApiManager *)manager;
 
+//向服务端发起一个请求
 -(void)sendRequest:(HBTCPHeader *)request completion:(completeBlock)complete;
 
 @end
