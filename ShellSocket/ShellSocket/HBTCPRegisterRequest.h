@@ -10,4 +10,8 @@
 
 @interface HBTCPRegisterRequest : HBTCPHeader
 
+@property(nonatomic,assign)HBTCPDeviceType deviceType;//终端类型
+@property(nonatomic,copy)NSString *userId;//用户ID
+@property(nonatomic,copy)NSString *token;//用户授权码
+
 @end

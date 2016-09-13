@@ -23,6 +23,9 @@
 		8234E8861D869BED0065BAE9 /* HBTCPHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8234E8851D869BED0065BAE9 /* HBTCPHeader.m */; };
 		8234E8891D869DB70065BAE9 /* HBTCPResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 8234E8881D869DB70065BAE9 /* HBTCPResponse.m */; };
 		8234E88C1D86A9920065BAE9 /* HBTCPRegisterRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8234E88B1D86A9920065BAE9 /* HBTCPRegisterRequest.m */; };
+		82CEBAE81D8790550097FF01 /* HBTCPApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CEBAE71D8790550097FF01 /* HBTCPApiManager.m */; };
+		82CEBAEB1D8794E90097FF01 /* HBTCPHeartRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CEBAEA1D8794E90097FF01 /* HBTCPHeartRequest.m */; };
+		82CEBAEE1D879A2F0097FF01 /* HBNotificationKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CEBAED1D879A2F0097FF01 /* HBNotificationKey.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +60,13 @@
 		8234E8881D869DB70065BAE9 /* HBTCPResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HBTCPResponse.m; sourceTree = "<group>"; };
 		8234E88A1D86A9920065BAE9 /* HBTCPRegisterRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBTCPRegisterRequest.h; sourceTree = "<group>"; };
 		8234E88B1D86A9920065BAE9 /* HBTCPRegisterRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HBTCPRegisterRequest.m; sourceTree = "<group>"; };
+		82CEBAE51D878E2D0097FF01 /* HBTCPProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBTCPProtocol.h; sourceTree = "<group>"; };
+		82CEBAE61D8790550097FF01 /* HBTCPApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBTCPApiManager.h; sourceTree = "<group>"; };
+		82CEBAE71D8790550097FF01 /* HBTCPApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HBTCPApiManager.m; sourceTree = "<group>"; };
+		82CEBAE91D8794E90097FF01 /* HBTCPHeartRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBTCPHeartRequest.h; sourceTree = "<group>"; };
+		82CEBAEA1D8794E90097FF01 /* HBTCPHeartRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HBTCPHeartRequest.m; sourceTree = "<group>"; };
+		82CEBAEC1D879A2F0097FF01 /* HBNotificationKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBNotificationKey.h; sourceTree = "<group>"; };
+		82CEBAED1D879A2F0097FF01 /* HBNotificationKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HBNotificationKey.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,11 +125,15 @@
 		8217E9061D82840C002340BF /* ShellSocket */ = {
 			isa = PBXGroup;
 			children = (
+				82CEBAE61D8790550097FF01 /* HBTCPApiManager.h */,
+				82CEBAE71D8790550097FF01 /* HBTCPApiManager.m */,
 				8217E9071D828579002340BF /* HBTCPClientInstance.h */,
 				8217E9081D828579002340BF /* HBTCPClientInstance.m */,
 				8217E90A1D828795002340BF /* HBTCPHelper.h */,
 				8217E90B1D828795002340BF /* HBTCPHelper.m */,
 				8217E90D1D828F69002340BF /* HBTCPEnum.h */,
+				82CEBAEC1D879A2F0097FF01 /* HBNotificationKey.h */,
+				82CEBAED1D879A2F0097FF01 /* HBNotificationKey.m */,
 				8234E88D1D86AB1C0065BAE9 /* Protocol */,
 			);
 			path = ShellSocket;
@@ -145,12 +159,15 @@
 		8234E88D1D86AB1C0065BAE9 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
+				82CEBAE51D878E2D0097FF01 /* HBTCPProtocol.h */,
 				8234E8841D869BED0065BAE9 /* HBTCPHeader.h */,
 				8234E8851D869BED0065BAE9 /* HBTCPHeader.m */,
 				8234E8871D869DB70065BAE9 /* HBTCPResponse.h */,
 				8234E8881D869DB70065BAE9 /* HBTCPResponse.m */,
 				8234E88A1D86A9920065BAE9 /* HBTCPRegisterRequest.h */,
 				8234E88B1D86A9920065BAE9 /* HBTCPRegisterRequest.m */,
+				82CEBAE91D8794E90097FF01 /* HBTCPHeartRequest.h */,
+				82CEBAEA1D8794E90097FF01 /* HBTCPHeartRequest.m */,
 			);
 			name = Protocol;
 			sourceTree = "<group>";
@@ -229,10 +246,13 @@
 				8234E8861D869BED0065BAE9 /* HBTCPHeader.m in Sources */,
 				8234E8891D869DB70065BAE9 /* HBTCPResponse.m in Sources */,
 				8217E91A1D82B4F7002340BF /* base64.cc in Sources */,
+				82CEBAEB1D8794E90097FF01 /* HBTCPHeartRequest.m in Sources */,
 				8217E90C1D828795002340BF /* HBTCPHelper.m in Sources */,
 				8217E8F71D8283FC002340BF /* ViewController.m in Sources */,
 				8217E91B1D82B4F7002340BF /* client.cpp in Sources */,
+				82CEBAEE1D879A2F0097FF01 /* HBNotificationKey.m in Sources */,
 				8217E9091D828579002340BF /* HBTCPClientInstance.m in Sources */,
+				82CEBAE81D8790550097FF01 /* HBTCPApiManager.m in Sources */,
 				8217E8F41D8283FC002340BF /* AppDelegate.m in Sources */,
 				8217E8F11D8283FC002340BF /* main.m in Sources */,
 				8217E91C1D82B4F7002340BF /* interface.cpp in Sources */,

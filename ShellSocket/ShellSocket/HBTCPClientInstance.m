@@ -9,6 +9,7 @@
 #import "HBTCPClientInstance.h"
 #import "HBTCPHelper.h"
 #import "HBTCPResponse.h"
+#import "HBNotificationKey.h"
 
 @interface HBTCPClientInstance ()<NSStreamDelegate>
 
@@ -75,38 +76,23 @@
 
 #pragma mark - Private
 -(void)handleStreamEventOpenCompleted:(NSStream *)stream{//连接成功
-    
+    if (stream == self.outputStream) {
+        NSLog(@"连接成功");
+    }
 }
 -(void)handleStreamEventHasBytesAvailable:(NSStream *)stream{//接收数据
     if (stream) {
         NSInputStream *inputStream=(NSInputStream *)stream;
         HBTCPResponse *lResponse=[HBTCPResponse responseWith:inputStream];
-//        uint8_t msgType[1024];
-//        NSInteger len = 0;
-//        len = [inputStream read:msgType maxLength:1];
-//        NSData *lData=[NSData dataWithBytes:msgType length:len];
-//        
-//        unsigned int test;
-//        uint8_t tid[1024];
-//        len = [inputStream read:(void *)&test maxLength:4];
-//        NSInteger a=htonl(test);
-//        NSData *lData1=[NSData dataWithBytes:tid length:len];
-//        
-//        NSLog(@"Hello");
-//        uint8_t buf[1024];
-//        NSInteger len = 0;
-//        len = [inputStream read:buf maxLength:1024];
-//        if (len>0) {
-//            NSData *lData=[NSData dataWithBytes:buf length:len];
-//            NSLog(@"%@",lData);
-//        }
+        [[NSNotificationCenter defaultCenter]postNotificationName:HB_TCP_NOTIFICATION_RESPONSE object:lResponse];
     }
 }
 -(void)handleStreamEventHasSpaceAvailable:(NSStream *)stream{//发送数据
     
 }
 -(void)handleStreamEventErrorOccurred:(NSStream *)stream{//错误
-//    [self disconnect];
+    [self disconnect];
+    NSLog(@"断开连接");
 }
 -(void)handleStreamEventEndEncountered:(NSStream *)stream{//inputStream接收到的末尾
     

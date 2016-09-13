@@ -32,4 +32,19 @@ typedef NS_ENUM(NSUInteger,HBTCPMessageType){
     HB_TCP_MSGTYPE_MAX = 64,
 };
 
+typedef NS_OPTIONS(NSUInteger, HBTCPDeviceType){
+    HB_TCP_DEVICE_TYPE_DEFAULT  =0,
+    HB_TCP_DEVICE_TYPE_ANDROID  =1,
+    HB_TCP_DEVICE_TYPE_IOS      =1<<1,
+    HB_TCP_DEVICE_TYPE_WP       =1<<2,
+    HB_TCP_DEVICE_TYPE_WEB      =1<<3,
+    HB_TCP_DEVICE_TYPE_PC       =1<<4,
+};
+
+typedef NS_ENUM(NSUInteger,HBTCPErrorCode){
+    HB_TCP_ERROR_CODE_SUCCESS=0,
+    HB_TCP_ERROR_CODE_FAILED=1,
+    HB_TCP_ERROR_CODE_TIMEOUT=408,
+};
+
 #endif /* HBTCPEnum_h */

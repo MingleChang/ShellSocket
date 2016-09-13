@@ -8,10 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "HBTCPEnum.h"
+#import "HBTCPProtocol.h"
 
-@interface HBTCPHeader : NSObject
+typedef void (^completeBlock)(NSError *error,id response);
+
+@interface HBTCPHeader : NSObject<HBTCPProtocol>
 
 @property(nonatomic,assign)HBTCPMessageType type;
 @property(nonatomic,assign)NSUInteger tid;
+
+@property(nonatomic,copy)completeBlock complete;
+
++(NSUInteger)nextTid;
 
 @end
