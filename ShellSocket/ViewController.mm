@@ -7,11 +7,11 @@
 //
 
 #import "ViewController.h"
-#import "HBTCPClientInstance.h"
 #import "protocol.h"
 #import "HBTCPHeartRequest.h"
 #import "HBTCPRegisterRequest.h"
 #import "HBTCPApiManager.h"
+#import "HBTCPClient.h"
 
 #include <iostream>
 #include <pthread.h>
@@ -31,7 +31,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    [[HBTCPClientInstance instance]connect:@"111.10.24.47" port:5150];
+//    [[HBTCPClientInstance instance]connect:@"111.10.24.47" port:5150];
+//    [[HBTCPApiManager manager].client connect:@"111.10.24.47" port:5150];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -79,10 +80,23 @@
 //    NSData *lData=[NSData dataWithBytes:&msg length:sizeof(MRegister)];
 //    [[HBTCPClientInstance instance]sendData:lData];
     
-    HBTCPRegisterRequest *lRegister=[HBTCPRegisterRequest registerWithUserId:@"d33b7049c9f94a7487bc90f929da78e0" andToken:@"e8d12b7c41d433396d511ca3618ae2d3"];
-    [[HBTCPApiManager manager]sendRequest:lRegister completion:^(NSError *error, id response) {
+    [[HBTCPApiManager manager]loginWithUserId:@"d33b7049c9f94a7487bc90f929da78e0" andToken:@"e8d12b7c41d433396d511ca3618ae2d3" completion:^(NSError *error, id response) {
         NSLog(@"Register:%@",error);
     }];
+    
+//    [[HBTCPApiManager manager].client connect:@"111.10.24.47" port:5150 completion:^(NSError *error, id response) {
+//        if (error) {
+//            return;
+//        }
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            HBTCPRegisterRequest *lRegister=[HBTCPRegisterRequest registerWithUserId:@"d33b7049c9f94a7487bc90f929da78e0" andToken:@"e8d12b7c41d433396d511ca3618ae2d3"];
+//            [[HBTCPApiManager manager]sendRequest:lRegister completion:^(NSError *error, id response) {
+//                NSLog(@"Register:%@",error);
+//            }];
+//        });
+//    }];
+    
+    
     
 //    [[HBTCPApiManager manager]sendRequest:[HBTCPHeartRequest heart] completion:^(NSError *error, id response) {
 //        NSLog(@"%@",error);

@@ -7,10 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HBTCPEnum.h"
+#import "HBTCPConfigure.h"
 #import "HBTCPProtocol.h"
-
-typedef void (^completeBlock)(NSError *error,id response);
 
 @interface HBTCPHeader : NSObject<HBTCPProtocol>
 

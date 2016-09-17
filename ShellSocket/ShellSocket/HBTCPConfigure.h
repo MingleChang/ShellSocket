@@ -45,6 +45,17 @@ typedef NS_ENUM(NSUInteger,HBTCPErrorCode){
     HB_TCP_ERROR_CODE_SUCCESS=0,
     HB_TCP_ERROR_CODE_FAILED=1,
     HB_TCP_ERROR_CODE_TIMEOUT=408,
+    HB_TCP_ERROR_CODE_DIDCONNECT=NSUIntegerMax,
 };
+
+typedef NS_ENUM(NSUInteger,HBTCPConnectState){
+    HBTCPConnectStateDisconnect,
+    HBTCPConnectStateConnecting,
+    HBTCPConnectStateConnected,
+};
+
+
+
+typedef void (^completeBlock)(NSError *error,id response);
 
 #endif /* HBTCPEnum_h */

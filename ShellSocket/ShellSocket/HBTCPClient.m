@@ -1,49 +1,41 @@
 //
-//  HBTCPClientInstance.m
+//  HBTCPClient.m
 //  ShellSocket
 //
-//  Created by MingleChang on 16/9/9.
+//  Created by 常峻玮 on 16/9/15.
 //  Copyright © 2016年 MingleChang. All rights reserved.
 //
 
-#import "HBTCPClientInstance.h"
-#import "HBTCPHelper.h"
-#import "HBTCPResponse.h"
-#import "HBNotificationKey.h"
+#import "HBTCPClient.h"
 
-@interface HBTCPClientInstance ()<NSStreamDelegate>
+@interface HBTCPClient ()<NSStreamDelegate>
 
-@property(nonatomic,strong)NSInputStream *inputStream;
-@property(nonatomic,strong)NSOutputStream *outputStream;
+@property(nonatomic,strong,readwrite)NSInputStream *inputStream;
+@property(nonatomic,strong,readwrite)NSOutputStream *outputStream;
+
+@property(nonatomic,copy)completeBlock connectCompleteBlock;
 
 @end
 
-@implementation HBTCPClientInstance
+@implementation HBTCPClient
 
-+(HBTCPClientInstance *)instance
-{
-    static HBTCPClientInstance *manager;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        manager = [[HBTCPClientInstance alloc] init];
-    });
-    return manager;
-}
-
--(instancetype)init{
-    self=[super init];
-    if (self) {
-        
-    }
-    return self;
-}
-
-#pragma mark - Public 
+#pragma mark - Public
 -(void)connect:(NSString *)host port:(NSInteger)port{
+    [self connect:host port:port completion:nil];
+}
+-(void)connect:(NSString *)host port:(NSInteger)port completion:(completeBlock)complete{
+    if (self.state!=HBTCPConnectStateDisconnect) {
+        [self disconnect];
+    }
+    
+    self.state=HBTCPConnectStateConnecting;
+    self.connectCompleteBlock=complete;
+    
+    
     NSInputStream  *tempInput  = nil;
     NSOutputStream *tempOutput = nil;
     
-//    [HBTCPHelper getStreamsToHostNamed:host port:port inputStream:&tempInput outputStream:&tempOutput];
+    //    [HBTCPHelper getStreamsToHostNamed:host port:port inputStream:&tempInput outputStream:&tempOutput];
     [NSStream getStreamsToHostWithName:host port:port inputStream:&tempInput outputStream:&tempOutput];
     self.inputStream  = tempInput;
     self.outputStream = tempOutput;
@@ -58,6 +50,11 @@
     [self.outputStream open];
 }
 -(void)disconnect{
+    if (self.state==HBTCPConnectStateDisconnect) {
+        return;
+    }
+    
+    self.state=HBTCPConnectStateDisconnect;
     if (self.inputStream) {
         [self.inputStream close];
         [self.inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
@@ -73,29 +70,43 @@
 -(void)sendData:(NSData *)data{
     [self.outputStream write:[data bytes] maxLength:[data length]];
 }
-
 #pragma mark - Private
 -(void)handleStreamEventOpenCompleted:(NSStream *)stream{//连接成功
     if (stream == self.outputStream) {
-        NSLog(@"连接成功");
+        self.state=HBTCPConnectStateConnected;
+        if (self.connectCompleteBlock) {
+            self.connectCompleteBlock(nil,nil);
+            self.connectCompleteBlock=nil;
+        }
+    }
+    if ([self.delegate respondsToSelector:@selector(client:handleStreamEventOpenCompleted:)]) {
+        [self.delegate client:self handleStreamEventOpenCompleted:stream];
     }
 }
 -(void)handleStreamEventHasBytesAvailable:(NSStream *)stream{//接收数据
-    if (stream) {
-        NSInputStream *inputStream=(NSInputStream *)stream;
-        HBTCPResponse *lResponse=[HBTCPResponse responseWith:inputStream];
-        [[NSNotificationCenter defaultCenter]postNotificationName:HB_TCP_NOTIFICATION_RESPONSE object:lResponse];
+    if ([self.delegate respondsToSelector:@selector(client:handleStreamEventHasBytesAvailable:)]) {
+        [self.delegate client:self handleStreamEventHasBytesAvailable:stream];
     }
 }
--(void)handleStreamEventHasSpaceAvailable:(NSStream *)stream{//发送数据
-    
+-(void)handleStreamEventHasSpaceAvailable:(NSStream *)stream{//发送数据    
+    if ([self.delegate respondsToSelector:@selector(client:handleStreamEventHasSpaceAvailable:)]) {
+        [self.delegate client:self handleStreamEventHasSpaceAvailable:stream];
+    }
 }
 -(void)handleStreamEventErrorOccurred:(NSStream *)stream{//错误
+    if (self.state==HBTCPConnectStateConnecting && self.connectCompleteBlock) {
+        NSError *lError=[NSError errorWithDomain:@"连接失败" code:HB_TCP_ERROR_CODE_DIDCONNECT userInfo:nil];
+        self.connectCompleteBlock(lError,nil);
+    }
     [self disconnect];
-    NSLog(@"断开连接");
+    if ([self.delegate respondsToSelector:@selector(client:handleStreamEventErrorOccurred:)]) {
+        [self.delegate client:self handleStreamEventErrorOccurred:stream];
+    }
 }
 -(void)handleStreamEventEndEncountered:(NSStream *)stream{//inputStream接收到的末尾
-    
+    if ([self.delegate respondsToSelector:@selector(client:handleStreamEventEndEncountered:)]) {
+        [self.delegate client:self handleStreamEventEndEncountered:stream];
+    }
 }
 #pragma mark - Delegate
 #pragma mark - NSStream Delegate
@@ -123,6 +134,4 @@
     }
     NSLog(@"%@\n%lu",aStream,(unsigned long)eventCode);
 }
-
-
 @end

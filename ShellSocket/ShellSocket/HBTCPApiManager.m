@@ -7,13 +7,15 @@
 //
 
 #import "HBTCPApiManager.h"
-#import "HBTCPClientInstance.h"
-#import "HBNotificationKey.h"
+#import "HBExternKey.h"
 #import "HBTCPResponse.h"
+#import "HBTCPClient.h"
+#import "HBTCPRegisterRequest.h"
 
-@interface HBTCPApiManager ()
+@interface HBTCPApiManager ()<HBTCPClientDelegate>
 
-@property(nonatomic,strong)NSMutableDictionary *requestDic;
+@property(nonatomic,strong,readwrite)HBTCPClient *client;
+@property(nonatomic,strong,readwrite)NSMutableDictionary *requestDic;
 
 @end
 
@@ -27,19 +29,37 @@
     });
     return manager;
 }
--(void)dealloc{
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
-}
+
 -(instancetype)init{
     self=[super init];
     if (self) {
+        self.client=[[HBTCPClient alloc]init];
+        self.client.delegate=self;
         self.requestDic=[NSMutableDictionary dictionary];
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(receiveReponseNotification:) name:HB_TCP_NOTIFICATION_RESPONSE object:nil];
     }
     return self;
 }
 
 #pragma mark - Public
+
+-(void)loginWithUserId:(NSString *)userId andToken:(NSString *)token completion:(completeBlock)complete{
+    [[HBTCPApiManager manager].client connect:HB_TCP_HOST port:5150 completion:^(NSError *error, id response) {
+        if (error) {
+            if (complete) {
+                complete(error,response);
+            }
+        }
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            HBTCPRegisterRequest *lRegister=[HBTCPRegisterRequest registerWithUserId:userId andToken:token];
+            [[HBTCPApiManager manager]sendRequest:lRegister completion:^(NSError *error, id response) {
+                if (complete) {
+                    complete(error,response);
+                }
+            }];
+        });
+    }];
+}
+
 -(void)sendRequest:(HBTCPHeader *)request completion:(completeBlock)complete{
     request.complete=complete;
     NSNumber *lKey=@(request.tid);
@@ -53,7 +73,7 @@
             [self.requestDic removeObjectForKey:lKey];
         }
     });
-    [[HBTCPClientInstance instance]sendData:[request package]];
+    [self.client sendData:[request package]];
 }
 
 -(void)receiveHasKeyWith:(HBTCPResponse *)response{
@@ -92,17 +112,33 @@
     }
 }
 
-#pragma mark - Notification
--(void)receiveReponseNotification:(NSNotification *)sender{
-    HBTCPResponse *lResponse=(HBTCPResponse *)sender.object;
-    if (![lResponse isKindOfClass:[HBTCPResponse class]]) {
-        return;
-    }
-    if ([self.requestDic.allKeys containsObject:@(lResponse.tid)]) {
-        [self receiveHasKeyWith:lResponse];
+-(void)receiveReponse:(HBTCPResponse *)response{
+    if ([self.requestDic.allKeys containsObject:@(response.tid)]) {
+        [self receiveHasKeyWith:response];
     }else{
-        [self receiveNoHasKeyWith:lResponse];
+        [self receiveNoHasKeyWith:response];
     }
 }
 
+#pragma mark - Delegate
+#pragma mark - HBTCPClient Delegate
+-(void)client:(HBTCPClient *)client handleStreamEventOpenCompleted:(NSStream *)stream{
+    
+}
+-(void)client:(HBTCPClient *)client handleStreamEventHasBytesAvailable:(NSStream *)stream{
+    if (stream) {
+        NSInputStream *inputStream=(NSInputStream *)stream;
+        HBTCPResponse *lResponse=[HBTCPResponse responseWith:inputStream];
+        [self receiveReponse:lResponse];
+    }
+}
+-(void)client:(HBTCPClient *)client handleStreamEventHasSpaceAvailable:(NSStream *)stream{
+    NSOutputStream *outputStream=(NSOutputStream *)stream;
+}
+-(void)client:(HBTCPClient *)client handleStreamEventErrorOccurred:(NSStream *)stream{
+    
+}
+-(void)client:(HBTCPClient *)client handleStreamEventEndEncountered:(NSStream *)stream{
+    
+}
 @end
